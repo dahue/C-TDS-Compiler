@@ -19,15 +19,10 @@ public class Program extends AST{
 		this.classList = classList;
 		this.setLineNumber(ln);
 		this.setColumnNumber(cn);
-		
 	}
 
 	public List<ClassDecl> getClassList() {
 		return classList;
-	}
-	
-	public void addClassDecl (ClassDecl classDecl) {
-		this.classList.add(classDecl);
 	}
 	
 	@Override
@@ -43,5 +38,4 @@ public class Program extends AST{
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
 	}
-	
 }

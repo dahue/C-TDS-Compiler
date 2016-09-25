@@ -4,6 +4,7 @@ package main.java.lexer;
 
 import java_cup.runtime.*;
 import main.java.parser.*;
+import main.java.ast.*;
 
 /*User Code*/
 
@@ -713,7 +714,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 50: break;
           case 6: 
-            { return new Symbol(Sym.INT_LITERAL, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.INT_LITERAL, new IntLiteral(yytext(), yyline, yycolumn));
             }
           case 51: break;
           case 7: 
@@ -817,7 +818,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 76: break;
           case 32: 
-            { return new Symbol(Sym.FLOAT_LITERAL, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.FLOAT_LITERAL, new FloatLiteral( yytext(), yyline, yycolumn));
             }
           case 77: break;
           case 33: 
@@ -825,7 +826,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 78: break;
           case 34: 
-            { return new Symbol(Sym.TBOOL, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.BOOL, yyline, yycolumn, yytext());
             }
           case 79: break;
           case 35: 
@@ -833,7 +834,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 80: break;
           case 36: 
-            { return new Symbol(Sym.TVOID, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.VOID, yyline, yycolumn, yytext());
             }
           case 81: break;
           case 37: 
@@ -845,7 +846,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 83: break;
           case 39: 
-            { return new Symbol(Sym.TFLOAT, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.FLOAT, yyline, yycolumn, yytext());
             }
           case 84: break;
           case 40: 
@@ -861,7 +862,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 87: break;
           case 43: 
-            { return new Symbol(Sym.TINTEGER, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.INTEGER, yyline, yycolumn, yytext());
             }
           case 88: break;
           case 44: 
@@ -869,7 +870,7 @@ public class Lexer implements java_cup.runtime.Scanner {
             }
           case 89: break;
           case 45: 
-            { return new Symbol(Sym.BOOL_LITERAL, yyline, yycolumn, yytext());
+            { return new Symbol(Sym.BOOL_LITERAL, new BoolLiteral(yytext(), yyline, yycolumn));
             }
           case 90: break;
           default:

@@ -14,8 +14,7 @@ public enum AssignOpType {
 				return "-=";
 			case ASSIGN:
 				return "=";
-		}
-		
+		}	
 		return null;		
 	}
 }

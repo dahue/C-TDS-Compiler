@@ -4,23 +4,23 @@ import main.java.visitor.ASTVisitor;
 
 public class IfStatement extends Statement {
 	private Expression condition;
-	private Block ifBlock;
+	private Block thenBlock;
 	private Block elseBlock;
 	
-	public IfStatement(Expression cond, Block ifBl, int line, int column) {
-		this.condition = cond;
-		this.ifBlock = ifBl;
+	public IfStatement(Expression c, Block b, int ln, int cn) {
+		this.condition = c;
+		this.thenBlock = b;
 		this.elseBlock = null;
-		this.setLineNumber(line);
-		this.setColumnNumber(column);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 	
-	public IfStatement(Expression cond, Block ifBl, Block elseBl, int line, int column) {
+	public IfStatement(Expression cond, Block thenBl, Block elseBl, int ln, int cn) {
 		this.condition = cond;
-		this.ifBlock = ifBl;
+		this.thenBlock = thenBl;
 		this.elseBlock = elseBl;
-		this.setLineNumber(line);
-		this.setColumnNumber(column);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
 	public Expression getCondition() {
@@ -31,12 +31,12 @@ public class IfStatement extends Statement {
 		this.condition = condition;
 	}
 
-	public Block getIfBlock() {
-		return ifBlock;
+	public Block getThenBlock() {
+		return thenBlock;
 	}
 
-	public void setIfBlock(Block ifBlock) {
-		this.ifBlock = ifBlock;
+	public void setThenBlock(Block thenBlock) {
+		this.thenBlock = thenBlock;
 	}
 
 	public Block getElseBlock() {
@@ -49,7 +49,7 @@ public class IfStatement extends Statement {
 	
 	@Override
 	public String toString() {
-		String rtn = "if " + condition + '\n' + ifBlock.toString();
+		String rtn = "if " + condition + '\n' + thenBlock.toString();
 		
 		if (elseBlock != null) {
 			rtn += "else \n" + elseBlock;

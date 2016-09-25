@@ -6,22 +6,22 @@ import java.util.LinkedList;
 
 public class VarLocation extends Location {
 	private int blockId;
-	private List<String> arrayId;		
+	private List<String> invocationList;		
 
-	public VarLocation(String id,int line,int column) { 		
+	public VarLocation(String id, int ln, int cn) { 		
 		this.id = id;
 		this.blockId = -1;
-		arrayId = new LinkedList<String>();
-		this.setLineNumber(line);
-		this.setColumnNumber(column);
+		this.invocationList = new LinkedList<String>();
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
-	public VarLocation(String id,List<String> l,int line,int column) {
+	public VarLocation(String id, List<String> l, int ln, int cn) {
 		this.id = id;
 		this.blockId = -1;
-		arrayId = l;
-		this.setLineNumber(line);
-		this.setColumnNumber(column);	
+		this.invocationList = l;
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);	
 	}
 		
 	public int getBlockId() {
@@ -33,18 +33,18 @@ public class VarLocation extends Location {
 	}
 
 	public List<String> getArrayId() {
-		return arrayId;
+		return invocationList;
 	}
 
 	public void setArrayId(List<String> l) {
-		arrayId = l;
+		invocationList = l;
 	}
 	
 
 	@Override
 	public String toString() {
 		String locString = id;
-		for (String arr : arrayId) {
+		for (String arr : invocationList) {
 			locString += "." + arr;
 		}
 		return locString;

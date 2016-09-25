@@ -12,12 +12,6 @@ public class BinOpExpr extends Expression {
 		lOperand = l;
 		rOperand = r;
 	}
-	
-	// public BinOpExpr(Expression e, TempExpression t) {
-	// 	lOperand = e;
-	// 	operator = t.getOperator();
-	// 	rOperand = t.getRightOperand();
-	// }
 
 	public BinOpExpr(Expression l, BinOpType op, Expression r, int line, int column){
 		operator = op;

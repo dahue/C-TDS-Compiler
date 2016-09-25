@@ -4,12 +4,12 @@ import main.java.visitor.ASTVisitor;
 
 /**
  *
- * @author Arangue-Cibils-Tissera Team
+ * @author Adrian Tissera
  */
 
-public class SemicolonStmt extends Statement{
+public class SemicolonStatement extends Statement{
     
-    public SemicolonStmt(int line, int column){
+    public SemicolonStatement(int line, int column){
         this.setLineNumber(line);
         this.setColumnNumber(column);
     }

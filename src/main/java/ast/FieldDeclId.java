@@ -11,19 +11,32 @@ import main.java.visitor.ASTVisitor;
  *
  * @author Adrian Tissera
  */
-public class IdFieldDecl extends AST{
+public class FieldDeclId extends AST{
 	private final String id;
-	private final IntLiteral il;
+	private final IntLiteral intLiteral;
 	
-	public IdFieldDecl(String id, IntLiteral il){
+	public FieldDeclId(String id){
 		this.id = id;
-		this.il = il;
+		this.intLiteral = null;
+	}
+	
+	public FieldDeclId(String id, IntLiteral il){
+		this.id = id;
+		this.intLiteral = il;
 	}
 
 	@Override
 	public String toString() {
 		String result = id;
 		return result;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public IntLiteral getIntLiteral() {
+		return intLiteral;
 	}
 	
 	@Override

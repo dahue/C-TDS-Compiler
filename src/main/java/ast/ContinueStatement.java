@@ -4,11 +4,11 @@ import main.java.visitor.ASTVisitor;
 
 /**
  *
- * @author Arangue-Cibils-Tissera Team
+ * @author Adrian Tissera
  */
-public class ContinueStmt extends Statement{
+public class ContinueStatement extends Statement{
 
-	public ContinueStmt(int line, int column){
+	public ContinueStatement(int line, int column){
         this.setLineNumber(line);
         this.setColumnNumber(column);
 	}

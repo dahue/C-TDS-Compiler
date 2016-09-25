@@ -10,11 +10,11 @@ public class UnaryOpExpr extends Expression {
 	
 	//Constructor
 	
-	public UnaryOpExpr(UnaryOpType op, Expression e,int line,int column){
+	public UnaryOpExpr(UnaryOpType op, Expression e, int ln, int cn){
 		operator = op;
 		operand = e;
-		this.setLineNumber(line);
-		this.setColumnNumber(column);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 	
 	public UnaryOpType getOperator() {

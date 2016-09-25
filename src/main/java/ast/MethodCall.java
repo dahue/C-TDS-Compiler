@@ -6,7 +6,7 @@ import main.java.visitor.ASTVisitor;
 
 /**
  *
- * @author Arangue-Cibils-Tissera Team
+ * @author Adrian Tissera
  */
 public class MethodCall extends Expression{
 	private String id;

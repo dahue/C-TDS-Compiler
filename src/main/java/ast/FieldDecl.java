@@ -12,23 +12,25 @@ import main.java.visitor.ASTVisitor;
  *
  * @author Adrian Tissera
  */
-public class FieldDecl extends Declaration{
-	private final Type t;
-	private final List<IdFieldDecl> lifd;
+public class FieldDecl extends AST{
+	private final Type type;
+	private final List<FieldDeclId> FieldDeclIdList;
 	
 	
-	public FieldDecl(Type t, List<IdFieldDecl> lifd){
-		this.t = t;
-		this.lifd = lifd;
+	public FieldDecl(Type type, List<FieldDeclId> FieldDeclIdList, int ln, int cn){
+		this.type = type;
+		this.FieldDeclIdList = FieldDeclIdList;
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 	
 	@Override
 	public String toString(){
 		String result = new String();
-		if (lifd != null) {
-			int n = lifd.size();
-			result += t.toString() + " ";
-			for (IdFieldDecl ifd : lifd) {
+		if (FieldDeclIdList != null) {
+			int n = FieldDeclIdList.size();
+			result += type.toString() + " ";
+			for (FieldDeclId ifd : FieldDeclIdList) {
 				result += ifd.toString();
 				if (n > 1) {
 					result += ", ";
@@ -43,6 +45,14 @@ public class FieldDecl extends Declaration{
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public List<FieldDeclId> getFieldDeclIdList() {
+		return FieldDeclIdList;
 	}
 	
 }

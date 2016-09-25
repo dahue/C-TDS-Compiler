@@ -1,7 +1,7 @@
 package main.java.ast;
 
 public abstract class Expression extends AST {
-	protected Expression expr;
+	protected Expression expression;
 	protected Type type;
 	
 	public Type getType() {
@@ -11,4 +11,13 @@ public abstract class Expression extends AST {
 	public void setType(Type t) {
 		this.type = t;
 	}
+
+	protected Expression getExpression() {
+		return expression;
+	}
+
+	protected void setExpression(Expression expression) {
+		this.expression = expression;
+	}
+	
 }

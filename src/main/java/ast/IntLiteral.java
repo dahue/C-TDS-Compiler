@@ -10,27 +10,23 @@ public class IntLiteral extends Literal {
 	 * Constructor for int literal that takes a string as an input
 	 * @param: String integer
 	 */
-	public IntLiteral(String val){
-		rawValue = val; // Will convert to int value in semantic check
-		value = null;
+	public IntLiteral(String val, int ln, int cn){
+		this.rawValue = val; // Will convert to int value in semantic check
+		this.value = Integer.parseInt(val);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
-	public IntLiteral(Integer n){
-		rawValue = n.toString();
-		value = n;
+	public IntLiteral(Integer n, int ln, int cn){
+		this.rawValue = n.toString();
+		this.value = n;
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
 	@Override
 	public Type getType() {
-		return Type.TINTEGER;
-	}
-
-	public String getStringValue() {
-		return rawValue;
-	}
-
-	public void setStringValue(String stringValue) {
-		this.rawValue = stringValue;
+		return Type.INTEGER;
 	}
 
 	/*

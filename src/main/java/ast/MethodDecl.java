@@ -1,58 +1,40 @@
 package main.java.ast;
 
+import java.util.LinkedList;
 import java.util.List;
 import main.java.visitor.ASTVisitor;
 
-
-public class MethodDecl extends Declaration{
-	private Type t;
+/**
+ *
+ * @author Adrian Tissera
+ */
+public class MethodDecl extends AST{
+	private Type type;
 	private String id;
-	private List<Param> pl;
-	private Block b;	
+	private List<Param> paramList;
+	private Block block;	
 	private Boolean isExtern;
-
 	
-	public MethodDecl(Type t, String id, List<Param> pl, Block b, int ln, int cl) {
-		this.t = t;
+	public MethodDecl(Type t, String id, List<Param> paramList, Block block, int ln, int cl) {
+		this.type = t;
 		this.id = id;
-		this.pl = pl;
-		if(b==null)
+		this.paramList = paramList;
+		if(block==null)
 			isExtern = true;
 		else{
 			isExtern = false;
-			this.b = b;
+			this.block = block;
 		}
 		this.setLineNumber(ln);
 		this.setColumnNumber(cl);
 	}
 	
-	public Type getType() {
-		return t;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public List<Param> getParam() {
-		return pl;
-	}
-
-	public Block getBlock() {
-		return b;
-	}
-
-	public boolean isExtern() {
-		return isExtern;
-	}
-
-
 	@Override
 	public String toString() {
-		String result = this.t + " " + this.id + " (";
-		if (this.pl != null) {
-			int n = this.pl.size();
-			for (Param p : this.pl) {
+		String result = this.type + " " + this.id + " (";
+		if (this.paramList != null) {
+			int n = this.paramList.size();
+			for (Param p : this.paramList) {
 				result += p.toString();
 				if (n > 1) {
 					result += ", ";
@@ -61,8 +43,8 @@ public class MethodDecl extends Declaration{
 			}
 		}
 		result += ")\n{\n";
-		if (b != null) {
-			result += this.b.toString();
+		if (block != null) {
+			result += this.block.toString();
 		}
 		result += "}";
 		return result;
@@ -71,6 +53,26 @@ public class MethodDecl extends Declaration{
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public List<Param> getParamList() {
+		return paramList;
+	}
+
+	public Block getBlock() {
+		return block;
+	}
+
+	public Boolean getIsExtern() {
+		return isExtern;
 	}
 	
 }

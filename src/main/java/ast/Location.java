@@ -1,5 +1,7 @@
 package main.java.ast;
 
+import main.java.visitor.ASTVisitor;
+
 public abstract class Location extends Expression {
 	protected String id;
 	
@@ -9,5 +11,10 @@ public abstract class Location extends Expression {
 	
 	public String getId() {
 		return id;
+	}
+	
+	@Override
+	public <T> T accept(ASTVisitor<T> v) {
+		return v.visit(this);
 	}
 }

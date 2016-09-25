@@ -6,14 +6,23 @@ public class BoolLiteral extends Literal{
 	private String rawValue;
 	private Boolean value;
 
-	public BoolLiteral(Boolean val){
+	public BoolLiteral(Boolean val, int ln, int cn){
 		this.rawValue = val.toString();
 		this.value = val;
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
+	}
+	
+	public BoolLiteral(String val, int ln, int cn){
+		this.rawValue = val.toString();
+		this.value = Boolean.parseBoolean(val);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 	
 	@Override
 	public Type getType() {
-		return Type.TBOOL;
+		return Type.BOOL;
 	}
 
 	/*

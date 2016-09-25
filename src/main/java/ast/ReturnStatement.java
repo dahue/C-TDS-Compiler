@@ -2,16 +2,16 @@ package main.java.ast;
 
 import main.java.visitor.ASTVisitor;
 
-public class ReturnStmt extends Statement {
+public class ReturnStatement extends Statement {
 	private Expression expression; // the return expression
 	
-	public ReturnStmt(Expression e, int line, int column) {
+	public ReturnStatement(Expression e, int ln, int cn) {
 		this.expression = e;
-		this.setLineNumber(line);
-		this.setColumnNumber(column);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 	
-	public ReturnStmt(int line, int column) {
+	public ReturnStatement(int line, int column) {
 		this.expression = null;
 		this.setLineNumber(line);
 		this.setColumnNumber(column);

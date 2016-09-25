@@ -9,19 +9,23 @@ public class FloatLiteral extends Literal {
 	/*
 	 * Constructor for float literal that takes a string as an input
 	 */
-	public FloatLiteral(String val){
-		rawValue = val; // Will convert to int value in semantic check
-		value = null;
+	public FloatLiteral(String val, int ln, int cn){
+		this.rawValue = val; // Will convert to int value in semantic check
+		this.value = Float.parseFloat(val);
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
-	public FloatLiteral(Float n){
+	public FloatLiteral(Float n, int ln, int cn){
 		rawValue = n.toString();
 		value = n;
+		this.setLineNumber(ln);
+		this.setColumnNumber(cn);
 	}
 
 	@Override
 	public Type getType() {
-		return Type.TFLOAT;
+		return Type.FLOAT;
 	}
 
 	/////////////////////////////////////////////

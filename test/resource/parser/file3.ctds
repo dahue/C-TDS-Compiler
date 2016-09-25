@@ -1,4 +1,3 @@
-//example program 
 class main {
 	integer inc(integer x) {
 		return x + 1;

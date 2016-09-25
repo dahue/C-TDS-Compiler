@@ -5,38 +5,38 @@ import java.util.List;
 import main.java.visitor.ASTVisitor;
 
 public class Block extends Statement {
-    private List<FieldDecl> fieldDecl;
-	private List<Statement> statements;
+    private List<FieldDecl> fieldDeclList;
+	private List<Statement> statementList;
 	private int blockId;
 	
 	public Block() {
-		statements = new ArrayList<Statement>();
-        fieldDecl  = new ArrayList<FieldDecl>();
-		blockId    = -1;
+		this.statementList = new ArrayList<Statement>();
+        this.fieldDeclList  = new ArrayList<FieldDecl>();
+		this.blockId    = -1;
 	}
 	
 	public Block(List<FieldDecl> f, List<Statement> s) {
-		blockId = -1;
-		statements = s;
-        fieldDecl = f;
+		this.fieldDeclList = f;
+		this.statementList = s;
+		this.blockId = -1;
 	}
-	
-	public void addStatement(Statement s) {
-		this.statements.add(s);
+
+	public List<FieldDecl> getFieldDeclList() {
+		return fieldDeclList;
 	}
-		
-	public List<Statement> getStatements() {
-		return this.statements;
+
+	public void setFieldDeclList(List<FieldDecl> fieldDeclList) {
+		this.fieldDeclList = fieldDeclList;
 	}
-        
-    public void addFieldDecl(FieldDecl fd){
-        this.fieldDecl.add(fd);
-    }
-        
-    public List<FieldDecl> getFieldDecl(){
-        return this.fieldDecl;
-    }
-		
+
+	public List<Statement> getStatementList() {
+		return statementList;
+	}
+
+	public void setStatementList(List<Statement> statementList) {
+		this.statementList = statementList;
+	}
+
 	public int getBlockId() {
 		return blockId;
 	}
@@ -49,17 +49,14 @@ public class Block extends Statement {
 	public String toString() {
         String result = "{\n";
 
-		if (fieldDecl != null) {
-			for(FieldDecl f : fieldDecl){
-				result += " " + f.toString() + "\n";
-			}	
+		for(FieldDecl f : fieldDeclList){
+			result += " " + f.toString() + "\n";
 		}
         
-		if (statements != null) {
-			for (Statement s: statements) {
-				result += " " + s.toString() + "\n";
-			}	
-		}
+		for (Statement s: statementList) {
+			result += " " + s.toString() + "\n";
+		}	
+
 		result += "}"; 
 		return result; 
 	}

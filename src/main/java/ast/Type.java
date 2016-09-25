@@ -1,10 +1,10 @@
 package main.java.ast;
 
 public enum Type {
-	TINTEGER,
-	TFLOAT,
-	TBOOL,
-	TVOID,
+	INTEGER,
+	FLOAT,
+	BOOL,
+	VOID,
 	UNDEFINED,
 	INTARRAY,
 	FLOATARRAY,
@@ -13,13 +13,13 @@ public enum Type {
 	@Override
 	public String toString() {
 		switch(this) {
-			case TINTEGER:
+			case INTEGER:
 				return "integer";
-			case TFLOAT:
+			case FLOAT:
 				return "float";
-			case TBOOL:
+			case BOOL:
 				return "bool";
-			case TVOID:
+			case VOID:
 				return "void";
 			case UNDEFINED:
 				return "undefined";

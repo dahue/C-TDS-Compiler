@@ -22,10 +22,10 @@ public void unrecovered_syntax_error(Symbol s){
 
 /*Terminals*/
 
-terminal TBOOL;
-terminal TINTEGER;
-terminal TFLOAT;
-terminal TVOID;
+terminal BOOL;
+terminal INTEGER;
+terminal FLOAT;
+terminal VOID;
 
 terminal BREAK;
 terminal CLASS;
@@ -65,232 +65,216 @@ terminal DOT;
 terminal DIV;
 terminal MULT;
 
-terminal    IntLiteral INT_LITERAL;
-terminal    FloatLiteral FLOAT_LITERAL;
-terminal    BoolLiteral BOOL_LITERAL;
-terminal    String ID;
+terminal    IntLiteral		INT_LITERAL;
+terminal    FloatLiteral	FLOAT_LITERAL;
+terminal    BoolLiteral		BOOL_LITERAL;
+terminal    String			ID;
 
 /*Non-Terminals*/
 
-non terminal Program program; 
-non terminal ClassDecl class_decl;
-non terminal BodyClass body_class;
-non terminal LinkedList<ClassDecl> class_list;
-non terminal MethodDecl method_decl;
-non terminal LinkedList<MethodDecl> method_list;
-non terminal IdFieldDecl id_field_decl;
-non terminal LinkedList<IdFieldDecl> list_id_field_decl;
-non terminal Param param; 
-non terminal LinkedList<Param> param_list;
-non terminal Block body;
-non terminal assign_op;
-non terminal MethodCall method_call;
-non terminal Block block;
-non terminal Type type;
-non terminal Expression expr;
-non terminal List<Expression> list_expr;
-non terminal Location location;
-non terminal List<String> list_invoc;
-non terminal String invoc;
-non terminal Literal literal;
-non terminal FieldDecl field_decl;
-non terminal LinkedList<FieldDecl> field_list;
-non terminal Statement statement, if_stmt, return_stmt;
-non terminal List<Statement> list_statement;
+non terminal Program					program; 
+non terminal ClassDecl					class_decl;
+non terminal LinkedList<ClassDecl>		class_decl_list;
+non terminal MethodDecl					method_decl;
+non terminal LinkedList<MethodDecl>		method_decl_list;
+non terminal FieldDeclId				field_decl_id;
+non terminal LinkedList<FieldDeclId>	field_decl_id_list;
+non terminal Param						param; 
+non terminal LinkedList<Param>			param_list;
+non terminal AssignOpType				assign_op;
+non terminal MethodCall					method_call;
+non terminal Block						block;
+non terminal Type						type;
+non terminal Expression					expr;
+non terminal List<Expression>			expr_list;
+non terminal Location					location;
+non terminal List<String>				invocation_list;
+non terminal String						invocation;
+non terminal Literal					literal;
+non terminal FieldDecl					field_decl;
+non terminal LinkedList<FieldDecl>		field_decl_list;
+non terminal Statement					statement;
+non terminal IfStatement				if_statement;
+non terminal ReturnStatement			return_statement;
+non terminal List<Statement>			statement_list;
 
 
 
 /*Precedences*/
-precedence left  ANDAND;
-precedence left  OROR;
-precedence nonassoc  LT, LTEQ, GTEQ, GT, EQEQ, NOTEQ;
-precedence left  PLUS, MINUS;
-precedence left  MULT, DIV, MOD;
-precedence right NOT;
+precedence left		ANDAND;
+precedence left		OROR;
+precedence nonassoc	LT, LTEQ, GTEQ, GT, EQEQ, NOTEQ;
+precedence left		PLUS, MINUS;
+precedence left		MULT, DIV, MOD;
+precedence right	NOT;
 
 
 start with program;
 
+program			::= class_decl_list:cdl											{: RESULT = new Program(cdl, cdlleft+1, cdlright+1); :}
+				;
 
-program				::= class_list:cl										{: RESULT = new Program(cl, clleft+1, clright+1); System.out.println("No error found. test OK"); :}
-					;
+class_decl_list	::= class_decl:cd												{: RESULT = new LinkedList<ClassDecl>(); RESULT.add(cd); :}
+				|	class_decl_list:cdl class_decl:cd							{: cdl.add(cd); RESULT = cdl; :}
+				;
 
-class_list			::=  class_decl:cd										{: RESULT = new LinkedList<ClassDecl>(); RESULT.add(cd); :}
-					|class_list:cl class_decl:cd							{: cl.add(cd); RESULT = cl; :}
-					;
-
-class_decl			::=  CLASS ID:id body_class:bc							{: RESULT = new ClassDecl(id, bc, idleft+1, idright+1); :}
-					;
-
-body_class			::= LBRACE RBRACE								
-					|LBRACE field_list:fl RBRACE							{: RESULT = new BodyClass(fl, null, flleft+1, flright+1); :}
-					|LBRACE method_list:ml RBRACE							{: RESULT = new BodyClass(null, ml, mlleft+1, mlright+1); :}
-					|LBRACE field_list:fl method_list:ml RBRACE				{: RESULT = new BodyClass(fl, ml, flleft+1, flright+1); :}
-					;
+class_decl		::= CLASS ID:id LBRACE RBRACE									{: RESULT = new ClassDecl(id, new LinkedList<FieldDecl>(), new LinkedList<MethodDecl>(), idleft+1, idright+1); :}
+				|	CLASS ID:id LBRACE field_decl_list:fdl RBRACE				{: RESULT = new ClassDecl(id, fdl, new LinkedList<MethodDecl>(), idleft+1, idright+1); :}
+				|	CLASS ID:id LBRACE method_decl_list:mdl RBRACE				{: RESULT = new ClassDecl(id, new LinkedList<FieldDecl>(), mdl, idleft+1, idright+1); :}
+				|	CLASS ID:id LBRACE field_decl_list:fdl method_decl_list:mdl RBRACE	{: RESULT = new ClassDecl(id, fdl, mdl, idleft+1, idright+1); :}
+				;
 /****************************************************Field**************************************************************/
 
-/*Field Declaration*/
+field_decl_list	::= field_decl:fd												{: RESULT = new LinkedList<FieldDecl>(); RESULT.add(fd); :}
+				|	field_decl_list:fdl field_decl:fd							{: fdl.add(fd); RESULT = fdl; :}
+				;
 
+field_decl		::= type:t field_decl_id_list:fdil SEMICOLON					{: RESULT = new FieldDecl(t, fdil, fdilleft+1, fdilright+1); :}
+				;
 
-/**List Field Decl*/
-
-field_list			::= field_decl:fd										{: RESULT = new LinkedList<FieldDecl>(); RESULT.add(fd); :}
-					|field_list:fl field_decl:fd							{: fl.add(fd); RESULT = fl; :}
-					;
-
-/*Field Decl*/
-field_decl			::= type:t list_id_field_decl:lifd SEMICOLON			{: RESULT = new FieldDecl(t, lifd); :}
-					;
-/*String*/
-id_field_decl		::= ID:id												{: RESULT = new IdFieldDecl(id, null); :}
-					| ID:id LBRACK INT_LITERAL:il RBRACK					{: RESULT = new IdFieldDecl(id, il); :}
-					;
 /*List String*/
-list_id_field_decl	::= list_id_field_decl:lifd COMMA id_field_decl:ifd		{: lifd.add(ifd); RESULT = lifd; :}
-					| id_field_decl:ifd										{: RESULT = new LinkedList<IdFieldDecl>(); RESULT.add(ifd); :}
+field_decl_id_list	::= field_decl_id_list:fdil COMMA field_decl_id:fdi			{: fdil.add(fdi); RESULT = fdil; :}
+					|	field_decl_id:fdi										{: RESULT = new LinkedList<FieldDeclId>(); RESULT.add(fdi); :}
 					;
+
+/*String*/
+field_decl_id	::= ID:id														{: RESULT = new FieldDeclId(id); :}
+				|	ID:id LBRACK INT_LITERAL:il RBRACK							{: RESULT = new FieldDeclId(id, il); :}
+				;
+
 /****************************************************EndField**************************************************************/
 
 /*Method Declaration*/
-method_list			::= method_decl:md										{: RESULT = new LinkedList<MethodDecl>(); RESULT.add(md); :}
-					|method_list:ml method_decl:md							{: ml.add(md); RESULT = ml; :}
-					;
+method_decl_list::= method_decl:md												{: RESULT = new LinkedList<MethodDecl>(); RESULT.add(md); :}
+				|	method_decl_list:mdl method_decl:md							{: mdl.add(md); RESULT = mdl; :}
+				;
 
-method_decl			::= type:t ID:id LPAREN RPAREN body:b					{: RESULT = new MethodDecl(t, id, null, b, idleft+1, idright+1); :}
-					|type:t ID:id LPAREN param_list:pl RPAREN body:b		{: RESULT = new MethodDecl(t, id, pl, b, idleft+1, idright+1); :}
-					;
+method_decl		::= type:t ID:id LPAREN RPAREN block:b							{: RESULT = new MethodDecl(t, id, new LinkedList<Param>(), b, idleft+1, idright+1); :}
+				|	type:t ID:id LPAREN param_list:pl RPAREN block:b			{: RESULT = new MethodDecl(t, id, pl, b, idleft+1, idright+1); :}
+				;
 
 /*************************************Parameter****************************************************************/
-param_list			::= param:p												{: RESULT = new LinkedList<Param>(); RESULT.add(p); :}
-					| param_list:pl COMMA param:p							{: pl.add(p); RESULT = pl; :}
-					;
+param_list		::= param:p														{: RESULT = new LinkedList<Param>(); RESULT.add(p); :}
+				|	param_list:pl COMMA param:p									{: pl.add(p); RESULT = pl; :}
+				;
 
-param				::= type:t ID:id										{: RESULT = new Param(t, id, idleft+1, idright+1); :}
-					;
+param			::= type:t ID:id												{: RESULT = new Param(t, id, idleft+1, idright+1); :}
+				;
 /*************************************EndParameter***********************************************************/
 
-body				::= block:b												{: RESULT = b; :}
-					| EXTERN SEMICOLON										{: RESULT = null; :}
-					;
+block			::= LBRACE RBRACE												{: RESULT = new Block(); :}
+				|	LBRACE field_decl_list:fl statement_list:ls RBRACE			{: RESULT = new Block(fl,ls); :}
+				|	LBRACE field_decl_list:fl RBRACE							{: RESULT = new Block(fl, new LinkedList<Statement>()); :}
+				|	LBRACE statement_list:sl RBRACE								{: RESULT = new Block(new LinkedList<FieldDecl>(), sl); :}
+				|	EXTERN SEMICOLON											{: RESULT = null; :}
+				;
 
-block				::= LBRACE RBRACE 										{: RESULT = new Block(); :}
-					| LBRACE field_list:fl list_statement:ls RBRACE         {: RESULT = new Block(fl,ls); :}
-					| LBRACE field_list:fl RBRACE							{: RESULT = new Block(fl,null); :}
-					| LBRACE list_statement:ls RBRACE						{: RESULT = new Block(null,ls); :}
-					;
-
-type				::= TINTEGER      	{:RESULT = Type.TINTEGER;:}
-					| TBOOL	 	   		{:RESULT = Type.TBOOL;:}
-					| TFLOAT		   	{:RESULT = Type.TFLOAT;:}
-					| TVOID		   		{:RESULT = Type.TVOID;:}
-					;
+type			::= INTEGER														{:RESULT = Type.INTEGER;:}
+				|	BOOL														{:RESULT = Type.BOOL;:}
+				|	FLOAT														{:RESULT = Type.FLOAT;:}
+				|	VOID														{:RESULT = Type.VOID;:}
+				;
 	   
 /********************************************Statement*************************************************************/
 
-statement			::= location:l assign_op:op expr:e SEMICOLON 		{: RESULT = new AssignStmt(l,(AssignOpType)op,e,lleft+1,lright+1);:}
-					| method_call:mc SEMICOLON 							{: RESULT = new MethodCallStmt(mc,mcleft+1,mcright+1);:}
-					| if_stmt:ifs 										{: RESULT = ifs; :}						
-					| FOR ID:id ASSIGN expr:value COMMA expr:e block:b 	{: RESULT = new ForStatement(id,value,e,b,idleft+1,idright+1) ;:}
-					| WHILE expr:e block:bl 							{: RESULT = new WhileStatement(e,bl, eleft+1, eright+1); :}
-					| return_stmt:rts 									{: RESULT = rts; :}
-					| BREAK:b SEMICOLON 								{: RESULT = new BreakStatement(bleft+1,bright+1); :}
-					| CONTINUE:c SEMICOLON 								{: RESULT = new ContinueStmt(cleft+1,cright+1); :}
-					| SEMICOLON:s 										{: RESULT = new SemicolonStmt(sleft+1,sright+1); :}
-					| block:b 											{: RESULT = b; :}
-					;
+statement_list	::= statement:s statement_list:sl								{: sl.add(s); RESULT = sl; :}
+				|	statement:s													{: RESULT = new LinkedList<Statement>(); RESULT.add(s); :}		
+				;
 
-if_stmt				::= IF LPAREN expr:e RPAREN block:b 				 		{:RESULT = new IfStatement(e,b,eleft+1,eright+1);:}
-					| IF LPAREN expr:e RPAREN block:b1 ELSE block:b2 			{:RESULT = new IfStatement(e,b1,b2,eleft+1,eright+1);:}
-					; 
+statement		::= location:l assign_op:op expr:e SEMICOLON					{: RESULT = new AssignStatement(op, l, e, lleft+1, lright+1); :}
+				|	method_call:mc SEMICOLON									{: RESULT = new MethodCallStatement(mc, mcleft+1, mcright+1); :}
+				|	if_statement:ifs											{: RESULT = ifs; :}						
+				|	FOR ID:id ASSIGN expr:e1 COMMA expr:e2 block:b				{: RESULT = new ForStatement(id, e1, e2, b, idleft+1, idright+1) ; :}
+				|	WHILE expr:e block:b										{: RESULT = new WhileStatement(e, b, eleft+1, eright+1); :}
+				|	return_statement:rs											{: RESULT = rs; :}
+				|	BREAK:b SEMICOLON											{: RESULT = new BreakStatement(bleft+1,bright+1); :}
+				|	CONTINUE:c SEMICOLON										{: RESULT = new ContinueStatement(cleft+1,cright+1); :}
+				|	SEMICOLON:s													{: RESULT = new SemicolonStatement(sleft+1, sright+1); :}
+				|	block:b														{: RESULT = b; :}
+				;
 
-return_stmt			::= RETURN:r SEMICOLON 										{: RESULT = new ReturnStmt(rleft+1,rright+1); :}
-					| RETURN:r expr:e SEMICOLON 								{: RESULT = new ReturnStmt(e,rleft+1,rright+1); :}
-					;			
+if_statement	::= IF LPAREN expr:e RPAREN block:b								{: RESULT = new IfStatement(e, b, eleft+1, eright+1); :}
+				|	IF LPAREN expr:e RPAREN block:b1 ELSE block:b2				{: RESULT = new IfStatement(e, b1, b2, eleft+1, eright+1); :}
+				; 
 
-list_statement		::= statement:s list_statement:sl 					{:sl.add(s); RESULT = sl;:}
-					| statement:s 										{:LinkedList l = new LinkedList<Statement>(); l.add(s); RESULT = l;:}					;
+return_statement::= RETURN:r SEMICOLON											{: RESULT = new ReturnStatement(rleft+1, rright+1); :}
+				|	RETURN:r expr:e SEMICOLON									{: RESULT = new ReturnStatement(e, rleft+1, rright+1); :}
+				;
+
 /*******************************************EndStatement*********************************************************/
 
-assign_op			::= ASSIGN 		{:RESULT = AssignOpType.ASSIGN;:}
-					| INC 			{:RESULT = AssignOpType.INC;:}
-					| DEC 			{:RESULT = AssignOpType.DEC;:}
-					;
+assign_op		::= ASSIGN														{:RESULT = AssignOpType.ASSIGN;:}
+				|	INC															{:RESULT = AssignOpType.INC;:}
+				|	DEC															{:RESULT = AssignOpType.DEC;:}
+				;
 
-method_call			::= ID:id LPAREN RPAREN 							{:RESULT = new MethodCall(id,idleft+1,idright+1);:}
-					| ID:id LPAREN list_expr:le RPAREN					{:RESULT = new MethodCall(id,new LinkedList<String>(),(List)le,idleft+1,idright+1);:}
-					| ID:id list_invoc:li LPAREN list_expr:le RPAREN 	{:RESULT = new MethodCall(id,li,(List)le,idleft+1,idright+1);:}
-					| ID:id list_invoc:li LPAREN RPAREN 				{:RESULT = new MethodCall(id,li,idleft+1,idright+1);:}
-					;
+method_call		::= ID:id LPAREN RPAREN											{: RESULT = new MethodCall(id, idleft+1, idright+1); :}
+				|	ID:id LPAREN expr_list:le RPAREN							{: RESULT = new MethodCall(id, new LinkedList<String>(), le, idleft+1, idright+1); :}
+				|	ID:id invocation_list:li LPAREN expr_list:le RPAREN			{: RESULT = new MethodCall(id, li, (List)le, idleft+1, idright+1); :}
+				|	ID:id invocation_list:li LPAREN RPAREN						{: RESULT = new MethodCall(id, li, idleft+1, idright+1); :}
+				;
 
 
 
 /***************************************Expression************************************************/
 
-expr ::= location:loc {: RESULT = loc; :}
-	   |method_call:c {: RESULT = c; :}
-	   |literal:lit {: RESULT = lit; :}
+expr ::= location:loc															{: RESULT = loc; :}
+	   |method_call:c															{: RESULT = c; :}
+	   |literal:lit																{: RESULT = lit; :}
 
-	   |expr:e1 PLUS:plu expr:e2  {: RESULT = new BinOpExpr(e1,BinOpType.PLUS,e2,pluleft+1,pluright+1); :}
+	   |expr:e1 PLUS:plu expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.PLUS,e2,pluleft+1,pluright+1); :}
 
-	   |expr:e1 MINUS:min expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.MINUS,e2,minleft+1,minright+1); :}
+	   |expr:e1 MINUS:min expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.MINUS,e2,minleft+1,minright+1); :}
 
-	   |expr:e1 MULT:mul expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.MULT,e2,mulleft+1,mulright+1); :}
+	   |expr:e1 MULT:mul expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.MULT,e2,mulleft+1,mulright+1); :}
 
-	   |expr:e1 DIV:di expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.DIV,e2,dileft+1,diright+1); :}
+	   |expr:e1 DIV:di expr:e2													{: RESULT = new BinOpExpr(e1,BinOpType.DIV,e2,dileft+1,diright+1); :}
 
-	   |expr:e1 MOD:mo expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.MOD,e2,moleft+1,moright+1); :}
+	   |expr:e1 MOD:mo expr:e2													{: RESULT = new BinOpExpr(e1,BinOpType.MOD,e2,moleft+1,moright+1); :}
 
-	   |expr:e1 LT:lt expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.LT,e2,ltleft+1,ltright+1); :}
+	   |expr:e1 LT:lt expr:e2													{: RESULT = new BinOpExpr(e1,BinOpType.LT,e2,ltleft+1,ltright+1); :}
 
-	   |expr:e1 GT:gt expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.GT,e2,gtleft+1,gtright+1); :}
+	   |expr:e1 GT:gt expr:e2													{: RESULT = new BinOpExpr(e1,BinOpType.GT,e2,gtleft+1,gtright+1); :}
 
-	   |expr:e1 LTEQ:lteq expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.LTEQ,e2,lteqleft+1,lteqright+1); :}
+	   |expr:e1 LTEQ:lteq expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.LTEQ,e2,lteqleft+1,lteqright+1); :}
 
-	   |expr:e1 GTEQ:gteq expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.GTEQ,e2,gteqleft+1,gteqright+1); :}
+	   |expr:e1 GTEQ:gteq expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.GTEQ,e2,gteqleft+1,gteqright+1); :}
 
-	   |expr:e1 EQEQ:eqeq expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.EQEQ,e2,eqeqleft+1,eqeqright+1); :}
+	   |expr:e1 EQEQ:eqeq expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.EQEQ,e2,eqeqleft+1,eqeqright+1); :}
 
-	   |expr:e1 NOTEQ:noteq expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.NOTEQ,e2,noteqleft+1,noteqright+1); :}
+	   |expr:e1 NOTEQ:noteq expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.NOTEQ,e2,noteqleft+1,noteqright+1); :}
 
-	   |expr:e1 ANDAND:andand expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.ANDAND,e2,andandleft+1,andandright+1); :}
+	   |expr:e1 ANDAND:andand expr:e2											{: RESULT = new BinOpExpr(e1,BinOpType.ANDAND,e2,andandleft+1,andandright+1); :}
 
-	   |expr:e1 OROR:oror expr:e2 {: RESULT = new BinOpExpr(e1,BinOpType.OROR,e2,ororleft+1,ororright+1); :}
+	   |expr:e1 OROR:oror expr:e2												{: RESULT = new BinOpExpr(e1,BinOpType.OROR,e2,ororleft+1,ororright+1); :}
 
-	   |MINUS:minU expr:e1 {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e1,minUleft+1,minUright+1); :}
+	   |MINUS:minU expr:e1														{: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e1,minUleft+1,minUright+1); :}
 
-	   |NOT:not expr:e1 {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e1,notleft+1,notright+1); :}
+	   |NOT:not expr:e1															{: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e1,notleft+1,notright+1); :}
 
-	   |LPAREN expr:e1 RPAREN {: RESULT = e1; :}
+	   |LPAREN expr:e1 RPAREN													{: RESULT = e1; :}
 	   ;
 
-
-
-list_expr ::= expr:e1 {: RESULT = new LinkedList<Expression>(Arrays.asList(e1)); :}
-			| expr:e1 COMMA list_expr:l {: l.add(0,e1); RESULT = (List<Expression>)l;:}
+expr_list ::= expr:e															{: RESULT = new LinkedList<Expression>(); RESULT.add(e); :}
+			| expr:e COMMA expr_list:l											{: l.add(0,e); RESULT = l; :}
 			;
 
 /***************************************EndExpression***********************************************/
 
-list_invoc			::= invoc:i												{:LinkedList res = new LinkedList(); res.add(i); RESULT = res;:}
-					|list_invoc:li invoc:i									{:li.add(i); RESULT = li;:}
+invocation_list		::= invocation:i											{: RESULT = new LinkedList<String>(); RESULT.add(i); :}
+					|	invocation_list:l invocation:i							{: l.add(i); RESULT = l; :}
 					;
 
-invoc				::= DOT ID:id											{:RESULT = id;:}
+invocation			::= DOT ID:id												{: RESULT = id; :}
 					; 
 
-location			::= ID:id {: RESULT = new VarLocation(id,idleft+1,idright+1); :}
-					|ID:id list_invoc:l {: RESULT = new VarLocation(id,l,idleft+1,idright+1); :}
-					|ID:id LBRACK expr:e RBRACK {: RESULT = new VarListLocation(id,e,idleft+1,idright+1); :}
-					|ID:id list_invoc:l LBRACK expr:e RBRACK {: RESULT = new VarListLocation(id,e,l,idleft+1,idright+1); :}
+location			::= ID:id													{: RESULT = new VarLocation(id, new LinkedList<String>(), idleft+1, idright+1); :}
+					|	ID:id invocation_list:l									{: RESULT = new VarLocation(id, l, idleft+1, idright+1); :}
+					|	ID:id LBRACK expr:e RBRACK								{: RESULT = new VarLocationList(id, e, idleft+1, idright+1); :}
+					|	ID:id invocation_list:l LBRACK expr:e RBRACK			{: RESULT = new VarLocationList(id, l, e, idleft+1, idright+1); :}
 					;
 
-
-literal				::= INT_LITERAL:l										{:RESULT = l;:}
-					|FLOAT_LITERAL:l										{:RESULT = l;:}
-					|BOOL_LITERAL:l											{:RESULT = l;:}
+literal				::= INT_LITERAL:l											{: RESULT = l; :}
+					|	FLOAT_LITERAL:l											{: RESULT = l; :}
+					|	BOOL_LITERAL:l											{: RESULT = l; :}
 					;
-
-
-
-
-

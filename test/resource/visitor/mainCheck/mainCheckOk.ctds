@@ -1,9 +1,0 @@
-//mainCheck OK!
-class main {
-	integer inc(integer x) {
-		return x + 1;
-	}
-	void main() {
-		integer y;
-	}
-}

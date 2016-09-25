@@ -11,7 +11,7 @@ public class Sym {
   public static final int GTEQ = 28;
   public static final int MULT = 40;
   public static final int LTEQ = 27;
-  public static final int TFLOAT = 4;
+  public static final int INTEGER = 3;
   public static final int LPAREN = 15;
   public static final int CONTINUE = 8;
   public static final int FOR = 10;
@@ -21,8 +21,8 @@ public class Sym {
   public static final int NOT = 25;
   public static final int SEMICOLON = 21;
   public static final int LT = 24;
+  public static final int BOOL = 2;
   public static final int COMMA = 22;
-  public static final int TBOOL = 2;
   public static final int CLASS = 7;
   public static final int INC = 36;
   public static final int DIV = 39;
@@ -39,13 +39,13 @@ public class Sym {
   public static final int EQEQ = 26;
   public static final int MOD = 34;
   public static final int BREAK = 6;
-  public static final int TVOID = 5;
+  public static final int VOID = 5;
   public static final int LBRACK = 19;
   public static final int LBRACE = 17;
   public static final int ELSE = 9;
-  public static final int TINTEGER = 3;
   public static final int RBRACK = 20;
   public static final int WHILE = 13;
+  public static final int FLOAT = 4;
   public static final int RBRACE = 18;
   public static final int DEC = 37;
   public static final int FLOAT_LITERAL = 42;
@@ -56,10 +56,10 @@ public class Sym {
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "TBOOL",
-  "TINTEGER",
-  "TFLOAT",
-  "TVOID",
+  "BOOL",
+  "INTEGER",
+  "FLOAT",
+  "VOID",
   "BREAK",
   "CLASS",
   "CONTINUE",

@@ -7,25 +7,25 @@ import main.java.visitor.ASTVisitor;
 
 /**
  *
- * @author Arangue-Cibils-Tissera Team
+ * @author Adrian Tissera
  */
-public class MethodCallStmt extends Statement{
+public class MethodCallStatement extends Statement{
     
     private MethodCall methodCall;
     
-    public MethodCallStmt(MethodCall mc, int line, int column){
-        methodCall = mc;
+    public MethodCallStatement(MethodCall mc, int line, int column){
+        this.methodCall = mc;
         this.setLineNumber(line);
         this.setColumnNumber(column);
     }
-    
-    public MethodCall getMethodCall(){
-        return methodCall;
-    }
-    
-    public void setMethodCall(MethodCall m){
-        this.methodCall = m;
-    }
+
+	public MethodCall getMethodCall() {
+		return methodCall;
+	}
+
+	public void setMethodCall(MethodCall methodCall) {
+		this.methodCall = methodCall;
+	}
     
     @Override
     public String toString(){

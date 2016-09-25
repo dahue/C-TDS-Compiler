@@ -5,35 +5,38 @@
  */
 package main.java.ast;
 
-import main.java.visitor.ASTVisitor;
 import java.util.List;
-import java.util.LinkedList;
+import main.java.visitor.ASTVisitor;
 
+/**
+ *
+ * @author Adrian Tissera
+ */
 public class ClassDecl extends AST {
 	private final String id;
-	private final BodyClass bc;
+	private final List<FieldDecl> fieldDeclList;
+	private final List<MethodDecl> methodDeclList;
 	
-	public ClassDecl(String id, BodyClass bc, int lineNumber, int colNumber) {
+	public ClassDecl(String id, List<FieldDecl> fd, List<MethodDecl> md, int lineNumber, int colNumber) {
 		this.id = id;
-		this.bc = bc;
+		this.fieldDeclList = fd;
+		this.methodDeclList = md;
 		this.setLineNumber(lineNumber);
 		this.setColumnNumber(colNumber);
 	}
 
-	public List<MethodDecl> getMethodDecl() {
-		return bc.getMethodDeclaration();
-	}
-
-
-	public List<FieldDecl> getFieldDecl() {
-		return bc.getFieldDeclaration();
-	}
-
-
 	@Override
 	public String toString(){
 		String result = "Class "+ id + " {\n";
-		result += bc.toString();
+		
+		for (FieldDecl fd : fieldDeclList) {
+			result += fd.toString() + "\n";
+		}
+		result += "\n";
+		for (MethodDecl md: methodDeclList) {
+			result += md.toString() + "\n";
+		}
+		
 		result += "}\n";
 		return result;
 	}
@@ -42,4 +45,17 @@ public class ClassDecl extends AST {
 	public <T> T accept(ASTVisitor<T> v) {
 		return v.visit(this);
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public List<FieldDecl> getFieldDeclList() {
+		return fieldDeclList;
+	}
+
+	public List<MethodDecl> getMethodDeclList() {
+		return methodDeclList;
+	}
+
 }

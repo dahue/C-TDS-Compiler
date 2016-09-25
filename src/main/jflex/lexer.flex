@@ -2,6 +2,7 @@ package main.java.lexer;
 
 import java_cup.runtime.*;
 import main.java.parser.*;
+import main.java.ast.*;
 
 /*User Code*/
 
@@ -49,53 +50,53 @@ FloatLiteral = ([0-9]+"."[0-9]+)
 	"return"		{return new Symbol(Sym.RETURN, yyline, yycolumn, yytext());}
 	"while"			{return new Symbol(Sym.WHILE, yyline, yycolumn, yytext());}
 	"extern"		{return new Symbol(Sym.EXTERN, yyline, yycolumn, yytext());}
-	"void"			{return new Symbol(Sym.TVOID, yyline, yycolumn, yytext());}
-	"bool" 			{return new Symbol(Sym.TBOOL, yyline, yycolumn, yytext());}
-	"float"			{return new Symbol(Sym.TFLOAT, yyline, yycolumn, yytext());}
-	"integer"		{return new Symbol(Sym.TINTEGER, yyline, yycolumn, yytext());}
-	"true|false"    {return new Symbol(Sym.BOOL_LITERAL, yyline, yycolumn, yytext());}
+	"void"			{return new Symbol(Sym.VOID, yyline, yycolumn, yytext());}
+	"bool" 			{return new Symbol(Sym.BOOL, yyline, yycolumn, yytext());}
+	"float"			{return new Symbol(Sym.FLOAT, yyline, yycolumn, yytext());}
+	"integer"		{return new Symbol(Sym.INTEGER, yyline, yycolumn, yytext());}
+	"true|false"    {return new Symbol(Sym.BOOL_LITERAL, new BoolLiteral(yytext(), yyline, yycolumn));}
 
 
 		/*Delimiters*/
 
-	"("				{return new Symbol(Sym.LPAREN, yyline, yycolumn, yytext());}
-	")"				{return new Symbol(Sym.RPAREN, yyline, yycolumn, yytext());}
-	"{"				{return new Symbol(Sym.LBRACE, yyline, yycolumn, yytext());}
-	"}"				{return new Symbol(Sym.RBRACE, yyline, yycolumn, yytext());}
-	"["				{return new Symbol(Sym.LBRACK, yyline, yycolumn, yytext());}	
-	"]"				{return new Symbol(Sym.RBRACK, yyline, yycolumn, yytext());}
+	"("					{return new Symbol(Sym.LPAREN, yyline, yycolumn, yytext());}
+	")"					{return new Symbol(Sym.RPAREN, yyline, yycolumn, yytext());}
+	"{"					{return new Symbol(Sym.LBRACE, yyline, yycolumn, yytext());}
+	"}"					{return new Symbol(Sym.RBRACE, yyline, yycolumn, yytext());}
+	"["					{return new Symbol(Sym.LBRACK, yyline, yycolumn, yytext());}	
+	"]"					{return new Symbol(Sym.RBRACK, yyline, yycolumn, yytext());}
 
-	";"				{return new Symbol(Sym.SEMICOLON, yyline, yycolumn, yytext());}
-	","				{return new Symbol(Sym.COMMA, yyline, yycolumn, yytext());}
-	"."				{return new Symbol(Sym.DOT, yyline, yycolumn, yytext());}
+	";"					{return new Symbol(Sym.SEMICOLON, yyline, yycolumn, yytext());}
+	","					{return new Symbol(Sym.COMMA, yyline, yycolumn, yytext());}
+	"."					{return new Symbol(Sym.DOT, yyline, yycolumn, yytext());}
 
 		/*Operators*/
 
-  	"+"             {return new Symbol(Sym.PLUS, yyline, yycolumn, yytext());}
-  	"-"             {return new Symbol(Sym.MINUS, yyline, yycolumn, yytext());}
-  	"*"				{return new Symbol(Sym.MULT, yyline, yycolumn, yytext());}
-	"/"				{return new Symbol(Sym.DIV, yyline, yycolumn, yytext());}
-  	"%"             {return new Symbol(Sym.MOD, yyline, yycolumn, yytext());}
+  	"+"					{return new Symbol(Sym.PLUS, yyline, yycolumn, yytext());}
+  	"-"				    {return new Symbol(Sym.MINUS, yyline, yycolumn, yytext());}
+  	"*"					{return new Symbol(Sym.MULT, yyline, yycolumn, yytext());}
+	"/"					{return new Symbol(Sym.DIV, yyline, yycolumn, yytext());}
+  	"%"				    {return new Symbol(Sym.MOD, yyline, yycolumn, yytext());}
 
-  	">"             {return new Symbol(Sym.GT, yyline, yycolumn, yytext());}
-  	"<"             {return new Symbol(Sym.LT, yyline, yycolumn, yytext());}
-  	"<="            {return new Symbol(Sym.LTEQ, yyline, yycolumn, yytext());}
-  	">="            {return new Symbol(Sym.GTEQ, yyline, yycolumn, yytext());}
-  	"=="            {return new Symbol(Sym.EQEQ, yyline, yycolumn, yytext());}
-  	"!="            {return new Symbol(Sym.NOTEQ, yyline, yycolumn, yytext());}
+  	">"					{return new Symbol(Sym.GT, yyline, yycolumn, yytext());}
+  	"<"				    {return new Symbol(Sym.LT, yyline, yycolumn, yytext());}
+  	"<="			    {return new Symbol(Sym.LTEQ, yyline, yycolumn, yytext());}
+  	">="			    {return new Symbol(Sym.GTEQ, yyline, yycolumn, yytext());}
+  	"=="			    {return new Symbol(Sym.EQEQ, yyline, yycolumn, yytext());}
+  	"!="			    {return new Symbol(Sym.NOTEQ, yyline, yycolumn, yytext());}
+	
+ 	"&&"				{return new Symbol(Sym.ANDAND, yyline, yycolumn, yytext());}
+  	"||"		        {return new Symbol(Sym.OROR, yyline, yycolumn, yytext());}
+  	"!"				    {return new Symbol(Sym.NOT, yyline, yycolumn, yytext());}
 
- 	"&&"            {return new Symbol(Sym.ANDAND, yyline, yycolumn, yytext());}
-  	"||"            {return new Symbol(Sym.OROR, yyline, yycolumn, yytext());}
-  	"!"             {return new Symbol(Sym.NOT, yyline, yycolumn, yytext());}
-
-	"="             {return new Symbol(Sym.ASSIGN, yyline, yycolumn, yytext());}
-  	"+="            {return new Symbol(Sym.INC, yyline, yycolumn, yytext());}
-  	"-="            {return new Symbol(Sym.DEC, yyline, yycolumn, yytext());}
+	"="					{return new Symbol(Sym.ASSIGN, yyline, yycolumn, yytext());}
+  	"+="			    {return new Symbol(Sym.INC, yyline, yycolumn, yytext());}
+  	"-="			    {return new Symbol(Sym.DEC, yyline, yycolumn, yytext());}
 
 		/*Literals*/
 
-	{IntegerLiteral}			{return new Symbol(Sym.INT_LITERAL, yyline, yycolumn, yytext());}
-	{FloatLiteral}   			{return new Symbol(Sym.FLOAT_LITERAL, yyline, yycolumn, yytext());}
+	{IntegerLiteral}			{return new Symbol(Sym.INT_LITERAL, new IntLiteral(yytext(), yyline, yycolumn));}
+	{FloatLiteral}   			{return new Symbol(Sym.FLOAT_LITERAL, new FloatLiteral( yytext(), yyline, yycolumn));}
 
 		/*Identifiers*/
 
