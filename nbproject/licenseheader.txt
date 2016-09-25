@@ -1,0 +1,12 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}Taller de Diseño de software 2016
+${licensePrefix}
+${licensePrefix}Proyecto: C-TDS compiler
+${licensePrefix}
+${licensePrefix}Autor: Adrian Tissera
+${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
