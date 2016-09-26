@@ -1,8 +1,8 @@
 package main.src;
 
 import java_cup.runtime.*;
-import main.java.parser.*;
-import main.java.ast.*;
+import main.src.*;
+import main.src.ast.*;
 
 /*User Code*/
 

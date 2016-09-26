@@ -6,9 +6,7 @@
 package main.src;
 
 import java_cup.runtime.*;
-import main.java.ast.*;
-import java.util.LinkedList;
-import java.util.List;
+import main.src.ast.*;
 import java.io.*;
 import java.util.*;
 import java_cup.runtime.XMLElement;
