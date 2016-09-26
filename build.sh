@@ -27,10 +27,9 @@ for file in `ls lib`; do export CLASSPATH=$CLASSPATH:lib/$file; done
 export CLASSPATH=$CLASSPATH:build/classes
 
 javac -classpath $CLASSPATH -d build/classes/ 	\
-		src/main/java/parser/*.java 			\
-		src/main/java/lexer/*.java 				\
-		src/main/java/ast/*.java 				\
-		src/main/java/visitor/*.java 			\
+		src/main/src/*.java 					\
+		src/main/src/ast/*.java 				\
+		src/main/src/visitor/*.java 			\
 		src/main/*.java 						
 		# test/main/java/*.java
 echo "Done!"

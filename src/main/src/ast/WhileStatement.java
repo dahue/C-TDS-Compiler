@@ -3,26 +3,26 @@ package main.src.ast;
 import main.src.visitor.ASTVisitor;
 
 public class WhileStatement extends Statement{
-	private Expression expr;
+	private Expression condition;
 	private Block block;
 
 	/*
 	* 
 	*/
 	public WhileStatement(Expression e, Block b, int line, int column){
-		this.expr = e;
+		this.condition = e;
 		this.block = b;
         this.setLineNumber(line);
         this.setColumnNumber(column);
                 
 	}
 
-	public Expression getExpression(){
-		return expr;
+	public Expression getCondition(){
+		return condition;
 	}
 
-	public void setExpression(Expression e){
-		this.expr = e;
+	public void setCondition(Expression e){
+		this.condition = e;
 	}
 
 	public Block getBlock(){
@@ -35,7 +35,7 @@ public class WhileStatement extends Statement{
 
 	@Override
 	public String toString(){
-		return "while" + expr.toString() + block.toString();
+		return "while" + condition.toString() + block.toString();
 	}
 
 	@Override

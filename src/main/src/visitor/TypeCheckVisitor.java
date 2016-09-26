@@ -1,35 +1,7 @@
 package main.src.visitor;
 
-import main.src.ast.ForStatement;
-import main.src.ast.IfStatement;
-import main.src.ast.UnaryOpExpr;
-import main.src.ast.Program;
-import main.src.ast.Location;
-import main.src.ast.MethodCall;
-import main.src.ast.MethodDecl;
-import main.src.ast.ASTSymbol;
-import main.src.ast.AST;
-import main.src.ast.IntLiteral;
-import main.src.ast.FieldDeclId;
-import main.src.ast.AssignStatement;
-import main.src.ast.Type;
-import main.src.ast.Statement;
-import main.src.ast.ClassDecl;
-import main.src.ast.ContinueStatement;
-import main.src.ast.BoolLiteral;
-import main.src.ast.Param;
-import main.src.ast.ReturnStatement;
-import main.src.ast.WhileStatement;
-import main.src.ast.FloatLiteral;
-import main.src.ast.MethodCallStatement;
-import main.src.ast.Block;
-import main.src.ast.FieldDecl;
-import main.src.ast.SemicolonStatement;
-import main.src.ast.BreakStatement;
-import main.src.ast.BinOpExpr;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import main.src.ast.*;
 
 // type checker, concrete visitor 
 public class TypeCheckVisitor implements ASTVisitor<Type> {
@@ -94,22 +66,29 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(MethodDecl md) {
+		for (Param p : md.getParamList()) {
+			p.accept(this);
+		}
 		md.getBlock().accept(this);
 		return md.getType();
 	}
 
 	@Override
-	public Type visit(Param aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(Param p) {
+		table.put(p.getId(), p);
+		return p.getType();
 	}
 
 	@Override
-	public Type visit(IntLiteral aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(IntLiteral il) {
+		return il.getType();
 	}
 
 	@Override
-	public Type visit(Block b) {		
+	public Type visit(Block b) {
+		for (FieldDecl fd : b.getFieldDeclList()) {
+			fd.accept(this);
+		}
 		List<Statement> statements = b.getStatementList();
 		for (Statement s : statements) {
 			s.accept(this);
@@ -118,33 +97,50 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	@Override
-	public Type visit(AssignStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(AssignStatement as) {
+		as.getLocation().accept(this);
+		as.getExpression().accept(this);
+		return null;
 	}
 
 	@Override
-	public Type visit(Location aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(VarLocation vl){
+		return vl.getType();
 	}
 
 	@Override
-	public Type visit(MethodCallStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(MethodCallStatement mcs) {
+		mcs.getMethodCall().accept(this);
+		return null;
 	}
 
 	@Override
-	public Type visit(IfStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(IfStatement is) {
+		is.getCondition().accept(this);
+		if (!is.getCondition().getType().equals(Type.BOOL))
+			errors.add(new Error(is.getCondition().getLineNumber(), is.getCondition().getColumnNumber(), ""));
+		return null;
 	}
 
 	@Override
-	public Type visit(MethodCall aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(MethodCall mc) {
+		for (Expression e : mc.getArgList()) {
+			e.accept(this);
+		}
+		return null;
 	}
 
 	@Override
-	public Type visit(ForStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(ForStatement fs) {
+		fs.getAssignment().accept(this);
+		
+		if (!fs.getCondition().accept(this).equals(Type.BOOL)){
+			errors.add(new Error(fs.getLineNumber(), fs.getColumnNumber(), "La condicion debe ser booleana"));
+		}
+		
+		fs.getBlock().accept(this);
+		
+		return null;
 	}
 
 	@Override
@@ -156,48 +152,73 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	}
 
 	@Override
-	public Type visit(SemicolonStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(SemicolonStatement scs) {
+		return null;
 	}
 
 	@Override
-	public Type visit(ContinueStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(ContinueStatement cs) {
+		return null;
 	}
 
 	@Override
-	public Type visit(BoolLiteral aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(BoolLiteral bl) {
+		return bl.getType();
 	}
 
 	@Override
-	public Type visit(FloatLiteral aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(FloatLiteral fl) {
+		return fl.getType();
 	}
 
 	@Override
-	public Type visit(BreakStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(BreakStatement bs) {
+		return null;
 	}
 
 	@Override
-	public Type visit(WhileStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(WhileStatement ws) {
+		ws.getCondition().accept(this);
+		
+		ws.getBlock().accept(this);
+		
+		return null;
 	}
 
 	@Override
-	public Type visit(BinOpExpr aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(BinOpExpr binop) {
+		if (binop.getLeftOperand().accept(this) != binop.getRightOperand().accept(this)) {
+			errors.add(new Error(binop.getLineNumber(), binop.getLineNumber(), "Los tipos de los operandos deben ser iguales"));
+		}
+		return null;
 	}
 
 	@Override
-	public Type visit(UnaryOpExpr aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	public Type visit(UnaryOpExpr unop) {
+		if (unop.getOperator().equals(UnaryOpType.MINUS)) {
+			boolean isAnumber = (unop.getExpression().accept(this).equals(Type.FLOAT) ||
+								unop.getExpression().accept(this).equals(Type.INTEGER));
+			if (!isAnumber) {
+				errors.add(new Error(unop.getLineNumber(), unop.getColumnNumber(), "The expression must be an integer or a float"));
+			}
+		} else if (unop.getOperator().equals(UnaryOpType.NOT)) {
+			boolean isAboolean = (unop.getExpression().accept(this).equals(Type.BOOL));
+			
+			if (!isAboolean) {
+				errors.add(new Error(unop.getLineNumber(), unop.getColumnNumber(), "The expression must be boolean"));
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public <T> T accept(ASTSymbol aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return null;
+	}
+
+	@Override
+	public <T> T visit(VarLocationList vll) {
+		return null;
 	}
 	
 	

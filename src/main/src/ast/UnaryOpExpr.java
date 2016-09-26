@@ -5,18 +5,17 @@ import main.src.visitor.ASTVisitor;
 public class UnaryOpExpr extends Expression {
 	
 	private UnaryOpType operator; 	//expr = operator expr
-	private Expression operand; 	//expression
 	
 	
 	//Constructor
 	
 	public UnaryOpExpr(UnaryOpType op, Expression e, int ln, int cn){
-		operator = op;
-		operand = e;
+		this.operator = op;
+		this.expression = e;
 		this.setLineNumber(ln);
 		this.setColumnNumber(cn);
 	}
-	
+
 	public UnaryOpType getOperator() {
 		return operator;
 	}
@@ -25,18 +24,29 @@ public class UnaryOpExpr extends Expression {
 		this.operator = operator;
 	}
 
-	public Expression getOperand() {
-		return operand;
+	@Override
+	public Expression getExpression() {
+		return expression;
 	}
-
-	public void setOperand(Expression operand) {
-		this.operand = operand;
-	}
-
 
 	@Override
+	public void setExpression(Expression expression) {
+		this.expression = expression;
+	}
+
+	@Override
+	public Type getType() {
+		return type;
+	}
+
+	@Override
+	public void setType(Type type) {
+		this.type = type;
+	}
+	
+	@Override
 	public String toString() {
-		return operator.toString() + operand.toString();
+		return operator.toString() + expression.toString();
 	}
 
 	@Override

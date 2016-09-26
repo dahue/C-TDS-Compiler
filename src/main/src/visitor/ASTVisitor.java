@@ -1,29 +1,6 @@
 package main.src.visitor;
 
-import main.src.ast.ForStatement;
-import main.src.ast.IfStatement;
-import main.src.ast.FieldDeclId;
-import main.src.ast.AssignStatement;
-import main.src.ast.UnaryOpExpr;
-import main.src.ast.Program;
-import main.src.ast.ClassDecl;
-import main.src.ast.ContinueStatement;
-import main.src.ast.BoolLiteral;
-import main.src.ast.Location;
-import main.src.ast.Param;
-import main.src.ast.ReturnStatement;
-import main.src.ast.WhileStatement;
-import main.src.ast.FloatLiteral;
-import main.src.ast.MethodCall;
-import main.src.ast.MethodCallStatement;
-import main.src.ast.Block;
-import main.src.ast.MethodDecl;
-import main.src.ast.FieldDecl;
-import main.src.ast.ASTSymbol;
-import main.src.ast.SemicolonStatement;
-import main.src.ast.IntLiteral;
-import main.src.ast.BreakStatement;
-import main.src.ast.BinOpExpr;
+import main.src.ast.*;
 
 // Abstract visitor
 public interface ASTVisitor<T> {
@@ -97,7 +74,7 @@ public interface ASTVisitor<T> {
 
 	public <T> T visit(AssignStatement aThis);
 
-	public <T> T visit(Location aThis);
+	public <T> T visit(VarLocation aThis);
 
 	public <T> T visit(MethodCallStatement aThis);
 
@@ -126,4 +103,7 @@ public interface ASTVisitor<T> {
 	public <T> T visit(UnaryOpExpr aThis);
 
 	public <T> T accept(ASTSymbol aThis);
+
+	public <T> T visit(VarLocationList aThis);
+
 }

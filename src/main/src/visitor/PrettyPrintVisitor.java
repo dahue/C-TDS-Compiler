@@ -31,6 +31,8 @@ import main.src.ast.SemicolonStatement;
 import main.src.ast.IntLiteral;
 import main.src.ast.BreakStatement;
 import main.src.ast.BinOpExpr;
+import main.src.ast.VarLocation;
+import main.src.ast.VarLocationList;
 
 /**
  *
@@ -80,11 +82,6 @@ public class PrettyPrintVisitor implements ASTVisitor<String> {
 
 	@Override
 	public String visit(AssignStatement aThis) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-	}
-
-	@Override
-	public String visit(Location aThis) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
@@ -155,6 +152,16 @@ public class PrettyPrintVisitor implements ASTVisitor<String> {
 
 	@Override
 	public <T> T accept(ASTSymbol aThis) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public <T> T visit(VarLocation aThis) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public <T> T visit(VarLocationList aThis) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
