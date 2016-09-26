@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.src.*;
+import main.src.ast.*;
+import main.src.visitor.*;
 
 /**
  *
@@ -25,8 +27,8 @@ public class Main {
 //			PrettyPrintVisitor printerVisitor = new PrettyPrintVisitor();
 //			System.out.println(printerVisitor.visit((Program)result));
 			
-//			TypeCheckVisitor typeChecker = new TypeCheckVisitor();
-//			System.out.println(typeChecker.visit((Program)result));
+			TypeCheckVisitor typeChecker = new TypeCheckVisitor();
+			typeChecker.visit((Program)result);
 			
 			
 			

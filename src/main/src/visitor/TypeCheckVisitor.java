@@ -135,7 +135,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		fs.getAssignment().accept(this);
 		
 		if (!fs.getCondition().accept(this).equals(Type.BOOL)){
-			errors.add(new Error(fs.getLineNumber(), fs.getColumnNumber(), "La condicion debe ser booleana"));
+			errors.add(new Error(fs.getLineNumber(), fs.getColumnNumber(), "Condition must be boolean"));
 		}
 		
 		fs.getBlock().accept(this);
@@ -188,7 +188,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	@Override
 	public Type visit(BinOpExpr binop) {
 		if (binop.getLeftOperand().accept(this) != binop.getRightOperand().accept(this)) {
-			errors.add(new Error(binop.getLineNumber(), binop.getLineNumber(), "Los tipos de los operandos deben ser iguales"));
+			errors.add(new Error(binop.getLineNumber(), binop.getLineNumber(), "The type of both operands must be equals"));
 		}
 		return null;
 	}
