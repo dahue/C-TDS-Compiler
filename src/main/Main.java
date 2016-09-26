@@ -6,10 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.java.ast.*;
-import main.java.lexer.Lexer;
-import main.java.parser.Parser;
-import main.java.visitor.*;
+import main.src.*;
 
 /**
  *

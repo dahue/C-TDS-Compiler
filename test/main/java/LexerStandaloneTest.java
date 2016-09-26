@@ -5,7 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
-import main.java.lexer.LexerStandalone;
+import main.src.LexerStandalone;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
