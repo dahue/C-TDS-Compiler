@@ -615,8 +615,8 @@ class CUP$Parser$actions {
               LinkedList<FieldDecl> RESULT =null;
 		int fdleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int fdright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		FieldDecl fd = (FieldDecl)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 RESULT = new LinkedList<FieldDecl>(); RESULT.add(fd); 
+		LinkedList<FieldDecl> fd = (LinkedList<FieldDecl>)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		 RESULT = fd; 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("field_decl_list",20, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -630,8 +630,8 @@ class CUP$Parser$actions {
 		LinkedList<FieldDecl> fdl = (LinkedList<FieldDecl>)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		int fdleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int fdright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
-		FieldDecl fd = (FieldDecl)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 fdl.add(fd); RESULT = fdl; 
+		LinkedList<FieldDecl> fd = (LinkedList<FieldDecl>)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
+		 fdl.addAll(fd); RESULT = fdl; 
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("field_decl_list",20, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;
@@ -639,14 +639,19 @@ class CUP$Parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 10: // field_decl ::= type field_decl_id_list SEMICOLON 
             {
-              FieldDecl RESULT =null;
+              LinkedList<FieldDecl> RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)).right;
 		Type t = (Type)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-2)).value;
 		int fdilleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).left;
 		int fdilright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		LinkedList<FieldDeclId> fdil = (LinkedList<FieldDeclId>)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
-		 RESULT = new FieldDecl(t, fdil, fdilleft+1, fdilright+1); 
+		
+																				RESULT = new LinkedList();
+																				for (FieldDeclId fdi : fdil){
+																					RESULT.add(new FieldDecl(t, fdi, fdilleft+1, fdilright+1));
+																				}
+																				
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("field_decl",19, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
           return CUP$Parser$result;

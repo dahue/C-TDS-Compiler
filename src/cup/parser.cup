@@ -89,7 +89,7 @@ non terminal Location					location;
 non terminal List<String>				invocation_list;
 non terminal String						invocation;
 non terminal Literal					literal;
-non terminal FieldDecl					field_decl;
+non terminal LinkedList<FieldDecl>		field_decl;
 non terminal LinkedList<FieldDecl>		field_decl_list;
 non terminal Statement					statement;
 non terminal IfStatement				if_statement;
@@ -123,11 +123,16 @@ class_decl		::= CLASS ID:id LBRACE RBRACE									{: RESULT = new ClassDecl(id, 
 				;
 /****************************************************Field**************************************************************/
 
-field_decl_list	::= field_decl:fd												{: RESULT = new LinkedList<FieldDecl>(); RESULT.add(fd); :}
-				|	field_decl_list:fdl field_decl:fd							{: fdl.add(fd); RESULT = fdl; :}
+field_decl_list	::= field_decl:fd												{: RESULT = fd; :}
+				|	field_decl_list:fdl field_decl:fd							{: fdl.addAll(fd); RESULT = fdl; :}
 				;
-
-field_decl		::= type:t field_decl_id_list:fdil SEMICOLON					{: RESULT = new FieldDecl(t, fdil, fdilleft+1, fdilright+1); :}
+																				
+field_decl		::= type:t field_decl_id_list:fdil SEMICOLON					{:
+																				RESULT = new LinkedList();
+																				for (FieldDeclId fdi : fdil){
+																					RESULT.add(new FieldDecl(t, fdi, fdilleft+1, fdilright+1));
+																				}
+																				:}
 				;
 
 /*List String*/

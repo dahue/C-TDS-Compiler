@@ -31,15 +31,21 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 	 */
 	@Override
 	public Type visit(Program p) {
+		this.table.push(new HashMap());
+		
 		for (ClassDecl cd : p.getClassList()) {
-			cd.accept(this);
+			cd.accept(this);	
 		}
+		
+		this.table.pop();
 		return null;
 	}
 
 	@Override
 	public Type visit(ClassDecl cd) {
-		this.table.put(cd.getId(), cd);
+		table.peek().put(cd.getId(), cd);
+		table.push(new HashMap());
+		
 		for (FieldDecl fd : cd.getFieldDeclList()) {
 			fd.accept(this);
 		}
@@ -47,25 +53,30 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 		for (MethodDecl md : cd.getMethodDeclList()) {
 			md.accept(this);
 		}
+		
+		table.pop();
 		return null;
 	}
 
 	@Override
 	public Type visit(FieldDecl fd) {
-		for (FieldDeclId fdid : fd.getFieldDeclIdList()) {
-			fdid.accept(this);
-		}
+//		for (FieldDeclId fdid : fd.getFieldDeclIdList()) {
+//			fdid.accept(this);
+//		}
 		return null;
 	}
 
 	@Override
 	public Type visit(FieldDeclId fdid) {
-		this.table.put(fdid.getId(), fdid);
+		table.peek().put(fdid.getId(), fdid);
 		return null;
 	}
 
 	@Override
 	public Type visit(MethodDecl md) {
+		table.peek().put(md.getId(), md);
+		table.push(new HashMap());
+		
 		for (Param p : md.getParamList()) {
 			p.accept(this);
 		}
@@ -75,7 +86,7 @@ public class TypeCheckVisitor implements ASTVisitor<Type> {
 
 	@Override
 	public Type visit(Param p) {
-		table.put(p.getId(), p);
+		table.peek().put(p.getId(), p);
 		return p.getType();
 	}
 

@@ -14,33 +14,33 @@ import main.src.visitor.ASTVisitor;
  */
 public class FieldDecl extends ASTSymbol{
 	private final Type type;
-	private final List<FieldDeclId> FieldDeclIdList;
+	private final FieldDeclId FieldDeclId;
 	
 	
-	public FieldDecl(Type type, List<FieldDeclId> FieldDeclIdList, int ln, int cn){
+	public FieldDecl(Type type, FieldDeclId FieldDeclId, int ln, int cn){
 		this.type = type;
-		this.FieldDeclIdList = FieldDeclIdList;
+		this.FieldDeclId = FieldDeclId;
 		this.setLineNumber(ln);
 		this.setColumnNumber(cn);
 	}
 	
-	@Override
-	public String toString(){
-		String result = new String();
-		if (FieldDeclIdList != null) {
-			int n = FieldDeclIdList.size();
-			result += type.toString() + " ";
-			for (FieldDeclId ifd : FieldDeclIdList) {
-				result += ifd.toString();
-				if (n > 1) {
-					result += ", ";
-				}
-				n--;
-			}
-		}
-		result += ";";
-		return result;
-	}
+//	@Override
+//	public String toString(){
+//		String result = new String();
+//		if (FieldDeclId != null) {
+//			int n = FieldDeclId.size();
+//			result += type.toString() + " ";
+//			for (FieldDeclId ifd : FieldDeclId) {
+//				result += ifd.toString();
+//				if (n > 1) {
+//					result += ", ";
+//				}
+//				n--;
+//			}
+//		}
+//		result += ";";
+//		return result;
+//	}
 
 	@Override
 	public <T> T accept(ASTVisitor<T> v) {
@@ -51,8 +51,8 @@ public class FieldDecl extends ASTSymbol{
 		return type;
 	}
 
-	public List<FieldDeclId> getFieldDeclIdList() {
-		return FieldDeclIdList;
+	public FieldDeclId getFieldDeclId() {
+		return FieldDeclId;
 	}
 	
 }
